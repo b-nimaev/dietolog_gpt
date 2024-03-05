@@ -17,6 +17,7 @@ import translationsRouter from './routes/translationRouter';
 import dialectRouter from './routes/dialectRouter';
 import dialogsRouter from './routes/dialogsRouter';
 import { DialogModel } from './models/Dialog';
+import botRouter from './routes/botRouter';
 
 const app = express();
 const server = createServer(app);
@@ -30,6 +31,7 @@ app.use('/api/sentences', authenticateToken, sentencesRouter);
 app.use('/api/vocabulary', authenticateToken, sentencesRouter);
 app.use('/api/translations', authenticateToken, translationsRouter);
 app.use('/api/dialogs', authenticateToken, dialogsRouter);
+app.use('/api/bot', authenticateToken, botRouter);
 
 server.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);

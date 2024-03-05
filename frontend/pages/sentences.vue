@@ -4,13 +4,12 @@
       <DashboardHeadingComponent title="Предложения" />
 
       <DashboardSentencesComponent />
-      <DashboardTranslationComponent />
     </div>
   </div>
 </template>
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Предложения'
+  title: 'Вопросы и Ответы'
 })
 definePageMeta({
   middleware: ["authed"],

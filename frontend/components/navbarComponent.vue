@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <h4>BurLive</h4>
+    <h4>Dietolog project</h4>
     <div class="theme-switcher">
       <button class="btn btn-sm"><i class="bi bi-sun"></i></button>
       <button class="btn btn-sm active"><i class="bi bi-moon"></i></button>
@@ -13,7 +13,10 @@
         <NuxtLink to="/users">Пользователи</NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/sentences">Предложения</NuxtLink>
+        <NuxtLink to="/sentences">Вопросы и Ответы</NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/bots">Боты</NuxtLink>
       </li>
       <!-- <li>
         <NuxtLink to="/dialogs">Диалоги</NuxtLink>

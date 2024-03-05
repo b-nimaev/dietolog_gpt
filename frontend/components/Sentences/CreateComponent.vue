@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { useSentencesStore } from '@/stores/sentences';
+import { useSentencesStore } from "@/stores/sentences";
+import { useBotStore } from "@/stores/botStore";
+const botStore = useBotStore();
+
 const sentencesStore = useSentencesStore();
 const selectedLanguage = sentencesStore.addSentencesLanguage;
 const options: any = ref([
@@ -7,65 +10,45 @@ const options: any = ref([
   { text: "Бурятский", value: "bur" },
   { text: "Английский", value: "en" },
 ]);
-
-const selectedPair = ref("personalDevelopment");
-const pairs = ref([
-  { value: "scientificResearch", key: "Научные исследования" },
-  { value: "familyRelationships", key: "Семейные отношения" },
-  { value: "environmentalIssues", key: "Экологические проблемы" },
-  { value: "technologicalInnovations", key: "Технологические новинки" },
-  { value: "ethicsAndMorality", key: "Этика и мораль" },
-  { value: "financialLiteracy", key: "Финансовая грамотность" },
-  { value: "healthyLifestyle", key: "Здоровый образ жизни" },
-  { value: "internationalRelations", key: "Международные отношения" },
-  { value: "personalDevelopment", key: "Развитие личности" },
-  { value: "culturalHeritage", key: "Культурное наследие" },
-  { value: "literature", key: "Литература" },
-]);
+const selectedBot = ref('');
+onMounted(() => {
+  botStore.fetchBotlist();
+});
 </script>
 <template>
   <div>
     <article class="form-for-add-sentence">
-      <form @submit.prevent="sentencesStore.addSentence()">
-        <h6>Добавить предложение</h6>
-        <div class="mb-2">
-          <label for="sentenceLanguage" class="form-label">Язык</label>
-          <select
-            class="form-select"
-            aria-label="Default select example"
-            id="sentenceLanguage"
-            v-model="selectedLanguage"
-          >
-            <option v-for="option in options" :value="option.value">
-              {{ option.text }}
-            </option>
-          </select>
+      <form @submit.prevent="">
+        <h6>Обучение бота</h6>
+        <div v-if="botStore.isLoadingFetchBotlist">
+          <p>Загрузка ...</p>
         </div>
-        <div class="my-2">
-          <label for="context" class="form-label">Контекст предложения</label>
-          <select
-            class="form-select"
-            aria-label="Default select example"
-            id="sentenceLanguage"
-            v-model="selectedPair"
-          >
-            <option v-for="pair in pairs" :value="pair.value">
-              {{ pair.key }}
-            </option>
-          </select>
+        <div v-else-if="botStore.isErrorBotlistLoading">
+          <p>{{ botStore.errorBotlistLoading }}</p>
         </div>
-        <label for="sentence" class="form-label">Предложение</label>
-        <div class="for-translate">
-          <textarea
-            id="sentence"
-            class="form-control"
-            placeholder="Предложение для перевода"
-            v-model="sentencesStore.addSentences"
-          >
-          </textarea>
-          <input type="submit" class="mt-3 btn btn-primary" />
-          <div class="my-2" v-if="sentencesStore.isErrorAddSentence">
-            <p class="text-muted">{{ sentencesStore.errorAddSentence }}</p>
+        <div v-else>
+          <div class="mb-2">
+            <label for="select-bot" class="form-label">Бот</label>
+            <select id="select-bot" class="form-select" v-model="selectedBot">
+              <option disabled value="">Выберите бота</option>
+              <option v-for="bot in botStore.botList" :key="bot._id" :value="bot._id">
+                {{ bot.name }}
+              </option>
+            </select>
+          </div>
+          <div class="for-translate">
+            <label for="sentence" class="form-label">Предложение</label>
+            <textarea
+              id="sentence"
+              class="form-control"
+              placeholder="Предложение для перевода"
+              v-model="sentencesStore.addSentences"
+            >
+            </textarea>
+            <input type="submit" class="mt-3 btn btn-primary" />
+            <div class="my-2" v-if="sentencesStore.isErrorAddSentence">
+              <p class="text-muted">{{ sentencesStore.errorAddSentence }}</p>
+            </div>
           </div>
         </div>
       </form>

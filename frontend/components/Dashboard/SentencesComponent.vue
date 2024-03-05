@@ -47,7 +47,7 @@ function formatTimeString(timeString: any) {
         <main>
           <section id="pending-sentences">
             <div class="custom-row">
-              <h5>Предложения</h5>
+              <h5>Вопросы и ответы</h5>
               <!-- <button class="btn btn-dark btn-sm">Новое предложение</button> -->
             </div>
 
